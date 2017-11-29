@@ -81,16 +81,16 @@ trait Adapter {
    *        the event JSON
    * @param tsFieldKey the key name of the timestamp field
    *                   which will be transformed
-   * @param toSeconds function which converts the numeric
-   *                  value of the key into a seconds past
+   * @param toMilliseconds function which converts the numeric
+   *                  value of the key into a milliseconds past
    *                  epoch format (e.g. x * 1000 for ms)
    * @return the updated JSON with valid date-time
    *         values in the tsFieldKey fields
    */
-  private[registry] def cleanupJsonEventValues(json: JValue, eventOpt: Option[(String,String)], tsFieldKey: String, toSeconds: Long => Long): JValue = {
+  private[registry] def cleanupJsonEventValues(json: JValue, eventOpt: Option[(String,String)], tsFieldKey: String, toMilliseconds: Long => Long): JValue = {
 
     def toStringField(value: Long): JString = {
-      val dt: DateTime = new DateTime(toSeconds(value))
+      val dt: DateTime = new DateTime(toMilliseconds(value))
       JString(JsonSchemaDateTimeFormat.print(dt))
     }
 
